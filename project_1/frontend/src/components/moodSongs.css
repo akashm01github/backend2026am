@@ -1,0 +1,53 @@
+.mood_container{
+    /* background: yellow; */
+    width: 100%;
+    border-top: 1px solid #000;
+    padding: 20px 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.heading_2{
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.songItem{
+    margin-bottom: 20px;
+    display: flex;
+    background: #AAC4F5;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 10px;
+}
+
+.title p{
+    font-family: "Poppins", sans-serif;
+}
+
+.song_title{
+    font-size: 25px;
+    font-family: "Outfit";
+    font-weight: 600;
+}
+
+.play_btn,
+.pause_btn {
+  font-size: 35px;
+  margin-top: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+

@@ -1,0 +1,33 @@
+.user_video_feed{
+    width: 20rem;
+}
+
+.btn{
+    background-color: #061E29;
+    color: #FFDAB3;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 10px;
+
+    &:hover{
+        background-color: #1B211A;
+    }
+}
+
+.mood_element{
+    width: 100%;
+    /* border: 2px solid violet; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading{
+    font-size: 30px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
