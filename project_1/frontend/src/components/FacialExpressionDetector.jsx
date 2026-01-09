@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
-
+import axios from 'axios';
 import './facialExpression.css'
 import MoodSongs from "./MoodSongs";
 
-function FacialExpressionDetector() {
+function FacialExpressionDetector({setSongs}) {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const intervalRef = useRef(null);
@@ -65,6 +65,14 @@ function FacialExpressionDetector() {
                 );
 
                 console.log(emotion); // 👉 logs: happy
+
+
+                axios.get(`http://localhost:3000/songs?mood=${emotion}`)
+                .then((response)=>{
+                    console.log(response.data.songs)
+
+                    setSongs(response.data.songs);
+                })
             }
         }, 500);
     };
@@ -109,7 +117,7 @@ function FacialExpressionDetector() {
                 {isDetecting ? "Stop Detection" : "Start Detection"}
             </button>
 
-            <MoodSongs/>
+            
         </div>
     );
 }

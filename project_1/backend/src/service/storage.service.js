@@ -9,11 +9,13 @@ var imagekit = new ImageKit({
 });
 
 
+
 function uploadFile(file){
     return new Promise((resolve,reject)=>{
         imagekit.upload({
             file:file.buffer,
-            fileName:"hello_cohort"
+            fileName: (new mongoose.Types.ObjectId()).toString(),
+            folder:'cohort-audio'
         },(error,result)=>{
             if(error){
                 reject(error)

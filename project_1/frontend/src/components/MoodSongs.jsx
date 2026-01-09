@@ -2,30 +2,8 @@ import React, { useState } from 'react'
 
 import './moodSongs.css'
 
-const MoodSongs = () => {
-    const [songs, setSongs] = useState([
-        {
-            title:"Neele Neele Ambar Par",
-            artist:"Kishore Kumar",
-            url:"test_url"
-        },
-        {
-            title:"Neele Neele Ambar Par",
-            artist:"Kishore Kumar",
-            url:"test_url"
-        },
-        {
-            title:"Neele Neele Ambar Par",
-            artist:"Kishore Kumar",
-            url:"test_url"
-        },
-        {
-            title:"Neele Neele Ambar Par",
-            artist:"Kishore Kumar",
-            url:"test_url"
-        },
-
-    ])
+const MoodSongs = ({songs}) => {
+   
 
     const renderData = songs.map((song,idx)=>{
         return <div key={idx} className='songItem'>
@@ -34,6 +12,7 @@ const MoodSongs = () => {
                 <p>~ {song.artist}</p>
             </div>
             <div className="play_pause_btn">
+                <audio src={song.audioUrl} controls></audio>
                 <i className="ri-play-circle-fill play_btn"></i>
                 <i className="ri-pause-large-fill pause_btn"></i>
             </div>
