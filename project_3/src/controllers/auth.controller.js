@@ -1,6 +1,8 @@
 const userModel = require("../models/user.model");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+
+
 async function registerContoller(req, res) {
     const { userName, password } = req.body;
 
@@ -22,7 +24,7 @@ async function registerContoller(req, res) {
     })
 
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
 
     res.cookie("token", token)
 
@@ -57,15 +59,17 @@ async function loginController(req, res) {
         })
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
 
-    res.cookie(token);
+    res.cookie("token", token)
 
     res.status(200).json({
         message: "User Logged in Successfully.",
         userName:user.userName
     })
 }
+
+
 
 module.exports = {
     registerContoller,
