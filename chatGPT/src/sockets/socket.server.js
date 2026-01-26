@@ -6,71 +6,119 @@ const { Server } = require("socket.io");
 const cookie = require("cookie");
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/users.model");
-const generateResponse = require("../services/Ai.Service");
+const { generateResponse, generateVectors } = require("../services/Ai.Service");
 const messageModel = require("../models/message.model");
+const { createMemory, queryMemory } = require("../services/vector.service");
 
 
 
-function initSocketServer(httpServer){
-    const io = new Server(httpServer,{});
+function initSocketServer(httpServer) {
+    const io = new Server(httpServer, {});
 
-    io.use(async(socket,next)=>{
+    io.use(async (socket, next) => {
         const cookies = cookie.parse(socket.handshake.headers?.cookie || "");
-        if(!cookies.token){
+        if (!cookies.token) {
             next(new Error("Authentication Faild:No Token Provided"));
         }
 
         try {
-            const decoded = jwt.verify(cookies.token,process.env.JWT_SECRET_KEY);
+            const decoded = jwt.verify(cookies.token, process.env.JWT_SECRET_KEY);
 
             const user = await userModel.findById(decoded.id);
 
             socket.user = user
 
             next();
-            
+
         } catch (error) {
             next(new Error("Authentication Faild:No Token Provided"));
         }
     })
 
-    io.on("connection",(socket)=>{
-        socket.on("ai_message",async(message_payload)=>{
-            console.log("ai_message",message_payload)
+    io.on("connection", (socket) => {
+        socket.on("ai_message", async (message_payload) => {
+            console.log("ai_message", message_payload)
+
+
+
+            const message = await messageModel.create({
+                chat: message_payload.chat,
+                user: socket.user._id,
+                content: message_payload.content,
+                role: "user"
+            })
+
+            // ! CREATING VECTORS OF USER MESSAGE
+            const vectors = await generateVectors(message_payload.content);
+
+            console.log(vectors);
+
+            //! SEARCH MEMORY IN PINECONE
+             const memory = await queryMemory({
+                queryVector:vectors,
+                limit:2,
+                metadata:{}
+            })
+
+            console.log("Memory",memory)
+
+            //! CREATE MEMORY IN PINECONE
+
+            await createMemory({
+                vectors,
+                messageId: message._id,
+                metadata: {
+                    chat: message_payload.chat,
+                    user: socket.user._id,
+                    text:message_payload.content
+                }
+            })
+
 
            
 
-            await messageModel.create({
-                chat:message_payload.chat,
-                user:socket.user._id,
-                content:message_payload.content,
-                role:"user"
-            })
 
             const chatHistory = await messageModel.find({
-                chat:message_payload.chat
+                chat: message_payload.chat
             })
 
-            
 
-            const response = await generateResponse(chatHistory.map((item)=>{
-                    return {
-                        role:item.role,
-                        parts:[{text:item.content}]
-                    }
+
+            const response = await generateResponse(chatHistory.map((item) => {
+                return {
+                    role: item.role,
+                    parts: [{ text: item.content }]
+                }
             }));
 
 
-             await messageModel.create({
-                chat:message_payload.chat,
-                user:socket.user._id,
-                content:response,
-                role:"model"
+            const responseMessage = await messageModel.create({
+                chat: message_payload.chat,
+                user: socket.user._id,
+                content: response,
+                role: "model"
             })
 
-            socket.emit("ai_response",{
-                content:response,
-                chat:message_payload.chat
+            //! GENERATE THE VECTORS OF RESPONSE(AI MESSAGE)
+            const responseVectors = await generateVectors(response);
+
+            // ! SAVING THE RESPONSE IN PINECONE DATABASE
+
+            await createMemory({
+                vectors: responseVectors,
+                messageId: responseMessage._id,
+                metadata: {
+                    chat: message_payload.chat,
+                    user: socket.user._id,
+                    text:response
+                }
+            })
+
+
+
+            socket.emit("ai_response", {
+                content: response,
+                chat: message_payload.chat
             })
         })
     })
