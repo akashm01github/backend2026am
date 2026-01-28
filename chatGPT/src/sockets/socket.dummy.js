@@ -39,24 +39,31 @@ function initSocketServer(httpServer) {
         socket.on("ai_message", async (message_payload) => {
             console.log("ai_message", message_payload)
 
-            const [message, vectors] = await Promise.all([
 
-                //! SAVING THE userMessage to the DB
-                messageModel.create({
-                    chat: message_payload.chat,
-                    user: socket.user._id,
-                    content: message_payload.content,
-                    role: "user"
-                }),
+            //! User Message Saved in MongoDB
+            const message = await messageModel.create({
+                chat: message_payload.chat,
+                user: socket.user._id,
+                content: message_payload.content,
+                role: "user"
+            })
 
-                //! CREATING VECTORS OF USER MESSAGE 
-                generateVectors(message_payload.content),
+            // ! CREATING VECTORS OF USER MESSAGE
+            const vectors = await generateVectors(message_payload.content);
 
+            console.log(vectors);
 
-            ])
+            //! SEARCH MEMORY IN PINECONE
+            const memory = await queryMemory({
+                queryVector: vectors,
+                limit: 2,
+                metadata: {}
+            })
 
+            console.log("Memory", memory)
 
-            // ! CREATE MEMORY IN PINECONE
+            //! CREATE MEMORY IN PINECONE
+
             await createMemory({
                 vectors,
                 messageId: message._id,
@@ -68,24 +75,15 @@ function initSocketServer(httpServer) {
             })
 
 
-            // ! QUERY ON PINECONE AND MONGODB
-            const [memory, chatHistory] = await Promise.all([
-                queryMemory({
-                    queryVector: vectors,
-                    limit: 2,
-                    metadata: {
-                        user: socket.user._id
-                    }
-                }),
-
-                messageModel.find({
-                    chat: message_payload.chat
-                })
-
-            ])
 
 
-            // ! SHORT TERM MEMORY
+            //! FETCH CHAT HISTORY FROM THE MONGODB
+            const chatHistory = await messageModel.find({
+                chat: message_payload.chat
+            })
+
+
+            //! SHORT TERM MERMORY
             const stm = chatHistory.map((item) => {
                 return {
                     role: item.role,
@@ -103,46 +101,40 @@ function initSocketServer(httpServer) {
             }]
 
 
-             // ! GENERATE AI RESPONSE USING LLM
-            const response = await generateResponse([...ltm, ...stm]);
+            // ! GENERATE AI RESPONSE USING LLM
+            const response = await generateResponse([...ltm,...stm]);
 
-            console.log(response)
+            
+            //! SAVE THE AI RESPONSE IN MONGODB 
+            const responseMessage = await messageModel.create({
+                chat: message_payload.chat,
+                user: socket.user._id,
+                content: response,
+                role: "model"
+            })
+
+            //! GENERATE THE VECTORS OF RESPONSE(AI MESSAGE)
+            const responseVectors = await generateVectors(response);
+
+            
+
+            // ! SAVING THE RESPONSE IN PINECONE DATABASE
+            await createMemory({
+                vectors: responseVectors,
+                messageId: responseMessage._id,
+                metadata: {
+                    chat: message_payload.chat,
+                    user: socket.user._id,
+                    text: response
+                }
+            })
+
+
 
             socket.emit("ai_response", {
                 content: response,
                 chat: message_payload.chat
             })
-
-
-            const [responseMessage, responseVectors] = await Promise.all([
-                messageModel.create({
-                    chat: message_payload.chat,
-                    user: socket.user._id,
-                    content: response,
-                    role: "model"
-                }),
-
-                generateVectors(response)
-            ])
-
-
-            try {
-                // ! SAVING THE RESPONSE IN PINECONE DATABASE
-                await createMemory({
-                    vectors: responseVectors,
-                    messageId: responseMessage._id,
-                    metadata: {
-                        chat: message_payload.chat,
-                        user: socket.user._id,
-                        text: response
-                    }
-                })
-                console.log("AI response saved to Pinecone successfully");
-            } catch (error) {
-                 console.error("Failed to save AI response to Pinecone:", error);
-            }
-
-
         })
     })
 }
