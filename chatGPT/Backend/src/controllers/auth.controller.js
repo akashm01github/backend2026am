@@ -73,6 +73,8 @@ async function loginController(req, res) {
         },
     })
 
+    console.log("User Successfully Loggedin")
+
 
 }
 
