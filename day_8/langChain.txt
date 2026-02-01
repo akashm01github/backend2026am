@@ -1,0 +1,23 @@
+LangChain = Robot Helper Kit 🧰
+
+LangChain helps the AI do big tasks step-by-step.
+
+---------------------------------------------------------------
+
+
+🧠 AI brain (ChatGPT)
+
+🧵 Chains (steps)
+
+📚 Memory (remember past chats)
+
+🗄️ Tools (database, API, files)
+
+
+
+---------------------------------------------------------------
+
+
+
+
+
