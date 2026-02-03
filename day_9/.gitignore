@@ -1,0 +1,69 @@
+# --------------------
+# Node modules
+# --------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --------------------
+# Environment files
+# --------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --------------------
+# Build output
+# --------------------
+dist/
+build/
+
+# --------------------
+# React / Vite / Next
+# --------------------
+.vite/
+.next/
+out/
+
+# --------------------
+# Logs
+# --------------------
+logs/
+*.log
+
+# --------------------
+# OS files
+# --------------------
+.DS_Store
+Thumbs.db
+
+# --------------------
+# Editor / IDE
+# --------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# --------------------
+# Coverage
+# --------------------
+coverage/
+
+# --------------------
+# Cache
+# --------------------
+.cache/
+.eslintcache
+
+# --------------------
+# Optional
+# --------------------
+*.zip
+*.tar

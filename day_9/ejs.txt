@@ -1,0 +1,9 @@
+1. Install EJS ✅
+
+2. Create Views Folder ✅
+
+3. index.ejs file Create in Views Folder ✅
+
+4. Ser View Engine app.set("view engine",'ejs') ✅
+
+5. Render index.ejs in  get method on  '/' ✅
