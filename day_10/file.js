@@ -17,14 +17,14 @@ const fs = require('fs');
 
 
 // ASYNC
-// fs.readFile('./contact.txt','utf-8',(err,res)=>{
-//     if(err){
-//         console.log(err)
-//     }
-//     else{
-//         console.log(res)
-//     }
-// })
+fs.readFile('./contact.txt','utf-8',(err,res)=>{
+    if(err){
+        console.log(err)
+    }
+    else{
+        console.log(res)
+    }
+})
 
 
 // SYNC
