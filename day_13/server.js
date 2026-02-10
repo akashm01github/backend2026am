@@ -1,14 +1,20 @@
 const http = require('http');
 
+const url = require('url');
+
+
 //! CREATE SERVER UISNG HTTP
 const myServer = http.createServer((req, res) => {
-    if (req.url == '/') {
+    const myUrl = url.parse(req.url,true);
+    console.log(myUrl)
+    if (myUrl.pathname == '/') {
         res.end("Home Page")
     }
-    else if (req.url == '/about') {
-        res.end("About Page")
+    else if (myUrl.pathname == '/about') {
+        const userName = myUrl.query.myname;
+        res.end(`Hi ${userName}`,)
     }
-    else if (req.url == '/contact') {
+    else if (myUrl.pathname == '/contact') {
         res.end("Contact Page")
     }
     else{
