@@ -1,0 +1,19 @@
+## GET REQUEST:
+
+When you want to get some data from the server
+
+## POST REQUEST:
+
+When you want to send and mutate some data in server
+
+## PUT :
+
+Replaces the **entire resource** with new data at a specific URL.
+
+## PATCH :
+
+Updates **only specific fields** of an existing resource.
+
+## DELETE:
+
+Removes a resource from the server.
