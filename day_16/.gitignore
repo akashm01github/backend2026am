@@ -1,0 +1,59 @@
+# =========================
+# Node modules
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# =========================
+# Build / dist folders
+# =========================
+dist/
+build/
+
+# =========================
+# Logs
+# =========================
+logs
+*.log
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor settings
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Cache files
+# =========================
+.cache/
+.eslintcache
+
+# =========================
+# Coverage reports
+# =========================
+coverage/
+
+# =========================
+# Optional: Lock files (uncomment if needed)
+# =========================
+# package-lock.json
+# yarn.lock
