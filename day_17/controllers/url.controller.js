@@ -21,6 +21,7 @@ const handleGenerateNewShortURL = async (req, res) => {
     })
 
 
+    return res.render('home',{id:shortID})
     return res.status(201).json({
         message:'URL Created',
         id:shortID

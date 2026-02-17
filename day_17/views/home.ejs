@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>URL SHORTNER</h1>
+
+
+        <% if (locals.id) { %>
+            <p>URL Generated: http://localhost:3000/url/<%= id%></p>
+        <% } %>
+
+
+
+        <form class="form"  method="post" action="/url">
+            <input name="url" type="text" placeholder="Enter Your Website Link">
+            <button>Generate Short Link</button>
+        </form>
+    </div>
+</body>
+
+</html>

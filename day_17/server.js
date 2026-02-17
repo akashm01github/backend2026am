@@ -1,22 +1,66 @@
 require('dotenv').config();
-
+const path = require('path');
 const express = require('express');
-const urlRoutes = require('./routes/url.routes');
 const connectDB = require('./db/db');
 const { URL } = require('./models/url.model');
 
 const app = express();
 
+
+//-------------------------------------------
+//! ROUTES IMPORT
+//-------------------------------------------
+
+const urlRoutes = require('./routes/url.routes');
+const staticRouter = require('./routes/static.routes');
+const userRoutes = require('./routes/user.routes');
+
+
+
+//-------------------------------------------
+//! MIDDLEWARE
+//-------------------------------------------
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
+
+
+
+// ! SET THE EJS
+app.set('view engine', 'ejs');
+
+// ! SET THE PAGES
+app.set('views', path.resolve('./views'));
+
+app.use(express.static('public'));
+
+
+
+
+//-------------------------------------------
+//! DATABASE CONNECTED
+//-------------------------------------------
 
 connectDB();
 
-app.use(express.urlencoded({ extended: true }));
 
 
+
+
+//! ROUTES
 app.use('/url', urlRoutes)
 
-app.get('/:shortID', async (req, res) => {
+
+app.use('/',staticRouter);
+
+
+app.use('/user',userRoutes)
+
+
+
+app.get('/url/:shortID', async (req, res) => {
     const shortID = req.params.shortID;
 
     const entry = await URL.findOneAndUpdate({
@@ -24,7 +68,7 @@ app.get('/:shortID', async (req, res) => {
     }, {
         $push: {
             visitHistory: {
-                timestamp:Date.now()
+                timestamp: Date.now()
             }
         }
     })
@@ -33,9 +77,7 @@ app.get('/:shortID', async (req, res) => {
 })
 
 
-app.get('/test',(req,res)=>{
-    return res.end(`<h1>Hello Akash Mukherjee</h1>`)
-})
+
 
 app.listen(3000, () => {
     console.log(`Server is Running on Port 3000.......`)
