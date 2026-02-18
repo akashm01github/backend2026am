@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Home</h1>
+    <% if (locals.id) { %>
+        <h3>http://localhost:3000/url/<%= id %></h3>
+    <% } %>
+    <form action="/url" method="post">
+        <input type="text" name="url" id="" placeholder="Enter the URL">
+        <button>Generate</button>
+    </form>
+</body>
+</html>

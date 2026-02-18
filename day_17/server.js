@@ -52,7 +52,7 @@ connectDB();
 //! ROUTES
 app.use('/url', urlRoutes)
 
-
+// STATIC ROUTES
 app.use('/',staticRouter);
 
 
