@@ -1,0 +1,56 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background: #07070e;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// Camera section — natural height, no forced stretch
+.app-section--camera {
+  flex-shrink: 0;
+
+  // Override the facial wrapper so it doesn't demand 100vh
+  .facial-wrapper {
+    min-height: unset;
+    padding-bottom: 2.5rem;
+  }
+}
+
+// Songs section — sits directly below, takes remaining space
+.app-section--songs {
+  flex: 1;
+
+  // Override the mood wrapper so it doesn't double-pad at the top
+  .mood-song-wrapper {
+    min-height: unset;
+    padding-top: 0;
+  }
+}
+
+// ── Divider between sections ──────────────────────────────
+.app-section--camera {
+  border-bottom: 1px solid rgba(#a78bfa, 0.12);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+    border-radius: 99px;
+  }
+}

@@ -2,8 +2,9 @@ import React, { useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 
 import '../components/FacialExpression.scss'
+import axios from 'axios';
 
-const FacialExpression = () => {
+const FacialExpression = ({setSongs}) => {
     const videoRef = useRef(null);
     const intervalRef = useRef(null);
 
@@ -45,15 +46,17 @@ const FacialExpression = () => {
                 .withFaceExpressions();
 
 
-            // if (detection && detection.expressions) {
-            //     console.log("Expressions:", detection.expressions);
-            // }
+            
 
             if (detection && detection.expressions) {
-                const dominant = Object.entries(detection.expressions)
+                const mood = Object.entries(detection.expressions)
                     .reduce((a, b) => a[1] > b[1] ? a : b)[0];
 
-                console.log("Expression:", dominant); // e.g. "happy", "sad", "angry"
+                console.log("Expression:", mood); // e.g. "happy", "sad", "angry"
+
+                // ! GET METHOD
+                const {data} = await axios.get(`http://localhost:3000/songs?mood=${mood}`)
+                setSongs(data.songs)
             }
         }, 500);
     };

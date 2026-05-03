@@ -1,0 +1,48 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background: #07070e;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-section--camera {
+  flex-shrink: 0;
+}
+.app-section--camera .facial-wrapper {
+  min-height: unset;
+  padding-bottom: 2.5rem;
+}
+
+.app-section--songs {
+  flex: 1;
+}
+.app-section--songs .mood-song-wrapper {
+  min-height: unset;
+  padding-top: 0;
+}
+
+.app-section--camera {
+  border-bottom: 1px solid rgba(167, 139, 250, 0.12);
+  position: relative;
+}
+.app-section--camera::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #a78bfa, transparent);
+  border-radius: 99px;
+}

@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=Michroma&family=Pacifico&display=swap");
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes scan {
+  0% {
+    top: 0%;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.6;
+  }
+}
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(192, 132, 252, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(192, 132, 252, 0.6);
+  }
+}
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.facial-wrapper {
+  min-height: 100vh;
+  background: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2.5rem);
+  font-family: "Michroma", sans-serif;
+}
+.facial-wrapper .facial-card {
+  width: 100%;
+  max-width: 560px;
+  background: #1c1c28;
+  border: 1px solid #2a2a3d;
+  border-radius: 24px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  animation: fadeUp 0.6s ease both;
+}
+.facial-wrapper .facial-card .facial-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.facial-wrapper .facial-card .facial-header .tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  border-radius: 99px;
+  padding: 0.28rem 0.9rem;
+  margin-bottom: 0.9rem;
+  font-family: "Michroma", sans-serif;
+}
+.facial-wrapper .facial-card .facial-header h1 {
+  font-family: "Pacifico", cursive;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: #f1f0ff;
+  line-height: 1.2;
+}
+.facial-wrapper .facial-card .facial-header h1 span {
+  background: linear-gradient(120deg, #c084fc, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.facial-wrapper .facial-card .facial-header p {
+  margin-top: 0.5rem;
+  font-size: 0.88rem;
+  color: #8b8aa8;
+  font-family: "Michroma", sans-serif;
+}
+.facial-wrapper .facial-card .video-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #06060c;
+  border: 1px solid #2a2a3d;
+  margin-bottom: 1.5rem;
+}
+.facial-wrapper .facial-card .video-container video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+.facial-wrapper .facial-card .video-container::before, .facial-wrapper .facial-card .video-container::after,
+.facial-wrapper .facial-card .video-container .bracket-bl::before, .facial-wrapper .facial-card .video-container .bracket-br::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: #c084fc;
+  border-style: solid;
+  z-index: 3;
+}
+.facial-wrapper .facial-card .video-container::before {
+  top: 10px;
+  left: 10px;
+  border-width: 2px 0 0 2px;
+  border-radius: 4px 0 0 0;
+}
+.facial-wrapper .facial-card .video-container::after {
+  top: 10px;
+  right: 10px;
+  border-width: 2px 2px 0 0;
+  border-radius: 0 4px 0 0;
+}
+.facial-wrapper .facial-card .video-container .bracket-bl::before {
+  bottom: 10px;
+  left: 10px;
+  border-width: 0 0 2px 2px;
+  border-radius: 0 0 0 4px;
+}
+.facial-wrapper .facial-card .video-container .bracket-br::before {
+  bottom: 10px;
+  right: 10px;
+  border-width: 0 2px 2px 0;
+  border-radius: 0 0 4px 0;
+}
+.facial-wrapper .facial-card .video-container .scan-line {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c084fc, transparent);
+  z-index: 4;
+  animation: scan 2s linear infinite;
+}
+.facial-wrapper .facial-card .video-container.running .scan-line {
+  display: block;
+}
+.facial-wrapper .facial-card .video-container .video-idle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #8b8aa8;
+  font-size: 0.88rem;
+  z-index: 2;
+  font-family: "Michroma", sans-serif;
+}
+.facial-wrapper .facial-card .video-container .video-idle .idle-icon {
+  font-size: 3rem;
+  opacity: 0.4;
+}
+.facial-wrapper .facial-card .facial-btn {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-family: "Michroma", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.facial-wrapper .facial-card .facial-btn.start {
+  background: linear-gradient(135deg, #c084fc, #818cf8);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(192, 132, 252, 0.35);
+}
+.facial-wrapper .facial-card .facial-btn.start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(192, 132, 252, 0.5);
+}
+.facial-wrapper .facial-card .facial-btn.start .btn-ping {
+  position: absolute;
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+}
+.facial-wrapper .facial-card .facial-btn.start .btn-ping::before, .facial-wrapper .facial-card .facial-btn.start .btn-ping::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.facial-wrapper .facial-card .facial-btn.start .btn-ping::before {
+  background: #34d399;
+}
+.facial-wrapper .facial-card .facial-btn.start .btn-ping::after {
+  background: #34d399;
+  animation: ping 1.2s ease-out infinite;
+}
+.facial-wrapper .facial-card .facial-btn.stop {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+.facial-wrapper .facial-card .facial-btn.stop:hover {
+  background: rgba(248, 113, 113, 0.2);
+  transform: translateY(-2px);
+}
+.facial-wrapper .facial-card .facial-btn:active {
+  transform: scale(0.97);
+}
+.facial-wrapper .facial-card .status-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #8b8aa8;
+  font-family: "Michroma", sans-serif;
+  letter-spacing: 0.06em;
+}
+.facial-wrapper .facial-card .status-pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8b8aa8;
+  transition: background 0.3s;
+}
+.facial-wrapper .facial-card .status-pill .dot.active {
+  background: #34d399;
+  animation: glow-pulse 1.5s infinite;
+}
